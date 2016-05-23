@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">ThumbWeather</string>
+
+    <string name="action_search">搜索</string>
+    <string name="action_refresh">更新</string>
+    <string name="action_settings">设置</string>
+    <string name="action_about">关于</string>
+    <string name="action_share">分享</string>
+
+    <string name="temper">温差</string>
+    <string name="today">今天</string>
+    <string name="tomorrow">明天</string>
+    <string name="later">后天</string>
+
+    <string name="wind">风力</string>
+    <string name="pressure">压强</string>
+    <string name="humidity">湿度</string>
+    <string name="sunrise">日出</string>
+    <string name="sunset">日落</string>
+
+    <!--<string name="max_temper">最高温度</string>-->
+    <!--<string name="min_temper">最低温度</string>-->
+    <string name="search_title">查询城市</string>
+
+    <string name="downloading_data">正在加载数据 ...</string>
+    <string name="getting_location">正在获取位置信息 ...</string>
+
+    <string name="error_dateFormat">DATE FORMAT ERROR</string>
+
+    <string name="setting_dateFormat">时间格式</string>
+    <string name="setting_dateFormatCustom">自定义日期格式</string>
+    <string name="setting_dateFormatCustom_summary">提供自定义简单日期格式使用</string>
+    <string name="setting_speedUnits">速度单位</string>
+    <string name="setting_tempUnits">温度单位</string>
+    <string name="setting_pressureUnits">压强单位</string>
+    <string name="setting_darkTheme">黑色主题</string>
+    <string name="setting_auto_detect_location">定位</string>
+    <string name="setting_differentiateDaysByTint">用颜色区分白天和晚上</string>
+    <string name="setting_refreshInterval">背景刷新间隔</string>
+    <string name="setting_unit_mps">米/秒(m/s)</string>
+    <string name="setting_unit_kph">千米/小时 (kph)</string>
+    <string name="setting_unit_mph">英里/小时 (mph)</string>
+    <string name="setting_wind_direction_format">风向风格</string>
+    <string name="settings_none">None</string>
+    <string name="setting_apiKey">API key</string>
+    <string name="setting_apiKey_summary">自定义API密匙OpenWeatherMap查询</string>
+
+    <string name="setting_unit_Celsuis">摄氏度</string>
+    <string name="setting_unit_Fahrenheit">华氏温度</string>
+    <string name="setting_unit_Kelvin">绝对温标</string>
+
+    <string name="setting_unit_hpa">hPa</string>
+    <string name="setting_unit_kpa">kPa</string>
+    <string name="setting_unit_mmhg">mm Hg</string>
+
+    <string name="speed_unit_mps">m/s</string>
+    <string name="speed_unit_kph">kph</string>
+    <string name="speed_unit_mph">mph</string>
+
+    <string name="wind_direction_format_none">无指示</string>
+    <string name="wind_direction_format_arrows">箭头</string>
+    <string name="wind_direction_format_abbreviations">缩写</string>
+
+    <string name="pressure_unit_hpa">hPa</string>
+    <string name="pressure_unit_kpa">kPa</string>
+    <string name="pressure_unit_mmhg">mm Hg</string>
+
+    <string name="dialog_ok">确定</string>
+    <string name="dialog_cancel">取消</string>
+
+    <string name="msg_err_parsing_json">Error parsing JSON.</string>
+    <string name="msg_connection_problem">There is a problem with your internet connection.</string>
+    <string name="msg_connection_not_available">Connection not available.</string>
+    <string name="msg_city_not_found">Specified city is not found.</string>
+
+    <string name="weather_sunny" translatable="false">&#xf00d;</string>
+    <string name="weather_clear_night" translatable="false">&#xf02e;</string>
+    <string name="weather_foggy" translatable="false">&#xf014;</string>
+    <string name="weather_cloudy" translatable="false">&#xf013;</string>
+    <string name="weather_rainy" translatable="false">&#xf019;</string>
+    <string name="weather_snowy" translatable="false">&#xf01b;</string>
+    <string name="weather_thunder" translatable="false">&#xf01e;</string>
+    <string name="weather_drizzle" translatable="false">&#xf01c;</string>
+
+    <string name="wind_direction_north">N</string>
+    <string name="wind_direction_north_north_east">NNE</string>
+    <string name="wind_direction_north_east">NE</string>
+    <string name="wind_direction_east_north_east">ENE</string>
+    <string name="wind_direction_east">E</string>
+    <string name="wind_direction_east_south_east">ESE</string>
+    <string name="wind_direction_south_east">SE</string>
+    <string name="wind_direction_south_south_east">SSE</string>
+    <string name="wind_direction_south">S</string>
+    <string name="wind_direction_south_south_west">SSW</string>
+    <string name="wind_direction_south_west">SW</string>
+    <string name="wind_direction_west_south_west">WSW</string>
+    <string name="wind_direction_west">W</string>
+    <string name="wind_direction_west_north_west">WNW</string>
+    <string name="wind_direction_north_west">NW</string>
+    <string name="wind_direction_north_north_west">NNW</string>
+    <string name="msg_too_many_requests">Too many requests. Please try again.</string>
+
+    <!-- 1: temperature; 2: unit -->
+    <string name="dash_clock_status">%1$s°%2$s</string>
+    <!-- 1: temperature; 2: unit; 3: weather description -->
+    <string name="dash_clock_expanded_title">%1$s°%2$s - %3$s</string>
+    <!-- 1: city; 2: country; 3: wind; 4: speed units; 5: pressure; 6: pressure units; 7: humidity -->
+    <string name="dash_clock_expanded_body">%1$s, %2$s\nWind: %3$s %4$s\nPressure: %5$s %6$s\nHumidity: %7$s %%\n</string>
+</resources>

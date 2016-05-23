@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Forecastie</string>
+
+    <string name="action_search">Buscar</string>
+    <string name="action_refresh">Actualizar</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_about">Acerca de</string>
+    
+    <string name="today">Hoy</string>
+    <string name="tomorrow">Mañana</string>
+    <string name="later">Más adelante</string>
+
+    <string name="wind">Viento</string>
+    <string name="pressure">Presión</string>
+    <string name="humidity">Humedad</string>
+
+    <string name="search_title">Buscar una ciudad</string>
+    
+    <string name="error_dateFormat">ERROR DE FORMATO DE FECHA</string>
+
+    <string name="setting_dateFormat">Formato de fecha</string>
+    <string name="setting_dateFormatCustom">Formato de fecha personalizado</string>
+    <string name="setting_dateFormatCustom_summary">Si se ha seleccionado arriba Personalizado, inserta la cadena SimpleDateFormat personalizada a utilizar</string>
+    <string name="setting_speedUnits">Unidades de velocidad</string>
+    <string name="setting_tempUnits">Unidades de temperatura</string>
+    <string name="setting_pressureUnits">Unidades de presión</string>
+    <string name="setting_darkTheme">Tema oscuro</string>
+    <string name="setting_differentiateDaysByTint">Diferenciar los dias con colores</string>
+    <string name="setting_refreshInterval">Intervalo de actualización en segundo plano</string>
+
+    <!-- 1: temperature; 2: unit -->
+    <string name="dash_clock_status">%1$s°%2$s</string>
+    <!-- 1: temperature; 2: unit; 3: weather description -->
+    <string name="dash_clock_expanded_title">%1$s°%2$s - %3$s</string>
+    <!-- 1: city; 2: country; 3: wind; 4: speed units; 5: pressure; 6: pressure units; 7: humidity -->
+    <string name="dash_clock_expanded_body">%1$s, %2$s\nViento: %3$s %4$s\nPresión: %5$s %6$s\nHumedad: %7$s %%\n</string>
+</resources>
