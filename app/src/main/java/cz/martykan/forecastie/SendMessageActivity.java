@@ -10,5 +10,6 @@ public class SendMessageActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.share_toolbar);
     }
 }

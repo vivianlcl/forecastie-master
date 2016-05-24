@@ -26,6 +26,9 @@
         <activity
             android:name=".SettingsActivity"
             android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".SendMessageActivity"
+            android:theme="@style/AppTheme"/>
 
         <receiver android:name="WidgetProvider">
             <intent-filter>

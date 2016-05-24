@@ -366,6 +366,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         return rain;
     }
 
+    /**
+     * 解析今天
+     * @param result
+     * @return
+     */
     private ParseResult parseTodayJson(String result) {
         try {
             JSONObject reader = new JSONObject(result);
@@ -732,7 +737,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             return true;
         }
         if (id == R.id.action_share){
-
+            Intent intent = new Intent(MainActivity.this,SendMessageActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
