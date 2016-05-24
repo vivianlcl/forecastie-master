@@ -85,8 +85,8 @@ public class TemperLineChartFragemnt extends Fragment{
                         highTemper = highTemper>Float.parseFloat(temperlist.get(j).getHighTemper0())?highTemper:Float.parseFloat(temperlist.get(j).getHighTemper0());
                         lowTemper = lowTemper<Float.parseFloat(temperlist.get(j).getLowTemper0())?lowTemper:Float.parseFloat(temperlist.get(j).getLowTemper0());
                     }
-                    pointHighValueList.add(new PointValue(i,highTemper-273.15f));
-                    pointLowValueList.add(new PointValue(i,lowTemper-273.15f));
+                    pointHighValueList.add(new PointValue(i+1,highTemper-273.15f));
+                    pointLowValueList.add(new PointValue(i+1,lowTemper-273.15f));
 
 
             }
