@@ -76,7 +76,6 @@ public class TemperLineChartFragemnt extends Fragment{
         List<PointValue> pointLowValueList = new ArrayList<>();
         List<Temper> temperlist = null;
         for (int i = 0;i<temper.size();i++){
-            Log.e("81-LCL-", "i = " + i + ",initLine:temper.size()=" + temper.size());
             temperlist = (List<Temper>)temper.get(i);
             if (temperlist.size()>0){
                     Float highTemper = Float.parseFloat(temperlist.get(0).getHighTemper0());

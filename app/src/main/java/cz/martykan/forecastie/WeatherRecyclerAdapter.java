@@ -118,7 +118,6 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<WeatherViewHold
 
             customViewHolder.itemDate.setText(dateString);
             customViewHolder.itemTemperature.setText(temperature + " °" + sp.getString("unit", "C"));
-            Log.e("-LCL-","weatherItem.getRain():"+weatherItem.getRain());
             if (!weatherItem.getRain().isEmpty()) {
                 if (Float.parseFloat(weatherItem.getRain()) > 0.1) {
                     customViewHolder.itemDescription.setText(weatherItem.getDescription().substring(0, 1).toUpperCase() +

@@ -368,9 +368,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     /**
      * 用Json类来,解析今天的天气信息数据.
-     *
-     * @param result,result便是openWeatherMap返回的Json数据对象.
-     * @return return返回的是解析结果.
+     *  return返回的是解析结果.
+     * result,result便是openWeatherMap返回的Json数据对象.
+     * @param
+     * @return
      *
      * todayWeather今天天气数据的一个对象,用来存储我们需要显示的天气信息
      */
@@ -597,13 +598,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 Calendar today = Calendar.getInstance();
 
                 if (cal.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
-                    Log.e("561-LCL-","Calendar.DAY_OF_YEAR:"+today.get(Calendar.DAY_OF_YEAR));
                     //today's all weather that reported per 3 hours.
                     longTermTodayWeather.add(weather);
                     temperToday.add(mapTemper(weather, today_time));
                     today_time++;
                 } else if (cal.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) + 1) {
-                    Log.e("569-LCL-","Calendar.DAY_OF_YEAR:"+cal.get(Calendar.DAY_OF_YEAR));
                     //tomorrow's all weather that reported per 3 hours.
                     longTermTomorrowWeather.add(weather);
                     temperTomorrow.add(mapTemper(weather, tomorrow_time));
@@ -619,7 +618,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         temperLater1.add(mapTemper(weather, later_time1));
                         later_time1++;
                     }else if (cal.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) + 4){
-                        temperLater1.add(mapTemper(weather, later_time2));
+                        temperLater2.add(mapTemper(weather, later_time2));
                         later_time2++;
                     }
 
@@ -658,6 +657,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         return temp;
     }
 
+    /**
+     * 更新未来五天的天气信息显示界面。
+     *
+     */
 
     private void updateLongTermWeatherUI() {
         if (destroyed) {
@@ -890,15 +893,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     abstract class GenericRequestTask extends AsyncTask<String, String, TaskOutput> {
         private void incLoadingCounter() {
+            Log.e("897-LCL-","incLoadingCounter:loading"+loading);
             loading++;
         }
 
         private void decLoadingCounter() {
+            Log.e("902-LCL-","decLoadingCounter:loading"+loading);
             loading--;
         }
 
         @Override
         protected void onPreExecute() {
+            Log.e("908-LCL-","onPreExecute");
             incLoadingCounter();
             if(!progressDialog.isShowing()) {
                 progressDialog.setMessage(getString(R.string.downloading_data));
@@ -1003,6 +1009,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         @Override
         protected void onPostExecute(TaskOutput output) {
+            Log.e("-LCL-","onPostExecute");
             if(loading == 1) {
                 progressDialog.dismiss();
             }
@@ -1014,6 +1021,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
 
         protected final void handleTaskOutput(TaskOutput output) {
+            Log.e("1025-LCL-","handleTaskOutput:TaskOutput"+output);
             switch (output.taskResult) {
                 case SUCCESS: {
                     ParseResult parseResult = output.parseResult;
