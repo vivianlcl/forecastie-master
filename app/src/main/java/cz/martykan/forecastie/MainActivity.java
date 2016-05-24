@@ -367,19 +367,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     /**
-     * 解析今天
-     * @param result
-     * @return
+     * 用Json类来,解析今天的天气信息数据.
+     *
+     * @param result,result便是openWeatherMap返回的Json数据对象.
+     * @return return返回的是解析结果.
+     *
+     * todayWeather今天天气数据的一个对象,用来存储我们需要显示的天气信息
      */
     private ParseResult parseTodayJson(String result) {
         try {
+            //创建一个对象.
             JSONObject reader = new JSONObject(result);
 
+            //获取的天气数据信息有错,返回错误码:CITY_NOT_FOUND.
             final String code = reader.optString("cod");
             if ("404".equals(code)) {
                 return ParseResult.CITY_NOT_FOUND;
             }
 
+            //解析城市,日出,日落等数据保存到todayWeather对象中.
             String city = reader.getString("name");
             String country = "";
             JSONObject countryObj = reader.optJSONObject("sys");
@@ -418,6 +424,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     rain = "0";
                 }
             }
+            //将解析出来的雨水量,温度,图标等信息保存到todayWeather.
             todayWeather.setRain(rain);
 
             final String idString = reader.getJSONArray("weather").getJSONObject(0).getString("id");
@@ -428,18 +435,20 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             todayWeather.setTemp_min(main.getString("temp_min"));
             temperToday.add(mapTemper(todayWeather,0));
 
+            //保存最新的天气数据到系统SharedPreferences.
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
             editor.putString("lastToday", result);
             editor.commit();
 
         } catch (JSONException e) {
+            //处理Json解析异常捕获,返回错误码:JSON_EXCEPTION.
             Log.e("JSONException Data", result);
             e.printStackTrace();
             return ParseResult.JSON_EXCEPTION;
         }
 
+        //解析天气数据成功,返回结果码:OK.
         return ParseResult.OK;
-
 
     }
 
