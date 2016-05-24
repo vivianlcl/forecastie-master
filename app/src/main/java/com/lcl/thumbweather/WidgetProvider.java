@@ -1,7 +1,6 @@
-package cz.martykan.forecastie;
+package com.lcl.thumbweather;
 
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -16,7 +15,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -31,7 +29,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Random;
+
+import cz.martykan.forecastie.R;
 
 public class WidgetProvider extends AppWidgetProvider {
 

@@ -1,4 +1,4 @@
-package cz.martykan.forecastie;
+package com.lcl.thumbweather;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

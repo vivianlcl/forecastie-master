@@ -1,14 +1,15 @@
-package cz.martykan.forecastie;
+package com.lcl.thumbweather;
 
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import cz.martykan.forecastie.R;
 
 public class RecyclerViewFragment extends Fragment {
 

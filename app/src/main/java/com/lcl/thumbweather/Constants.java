@@ -1,4 +1,4 @@
-package cz.martykan.forecastie;
+package com.lcl.thumbweather;
 
 public class Constants {
     public static final String  DEFAULT_CITY = "London";

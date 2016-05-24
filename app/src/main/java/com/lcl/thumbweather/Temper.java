@@ -1,9 +1,7 @@
-package cz.martykan.forecastie;
+package com.lcl.thumbweather;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
 
 /**
  * Created by Administrator on 2016/5/16.

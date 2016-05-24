@@ -1,27 +1,15 @@
-package cz.martykan.forecastie;
+package com.lcl.thumbweather;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
-import android.util.Log;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
-import java.util.Calendar;
+import cz.martykan.forecastie.R;
 
 public class DashClockWeatherExtension extends DashClockExtension {
     @Override

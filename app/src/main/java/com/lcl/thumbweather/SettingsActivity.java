@@ -1,4 +1,4 @@
-package cz.martykan.forecastie;
+package com.lcl.thumbweather;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import cz.martykan.forecastie.R;
 
 public class SettingsActivity extends PreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {

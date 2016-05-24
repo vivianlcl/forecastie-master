@@ -1,4 +1,4 @@
-package cz.martykan.forecastie;
+package com.lcl.thumbweather;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.martykan.forecastie.R;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
