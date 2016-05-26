@@ -3,7 +3,7 @@ package com.lcl.thumbweather;
 import android.app.Activity;
 import android.os.Bundle;
 
-import cz.martykan.forecastie.R;
+import com.lcl.thumbweather.R;
 
 /**
  * Created by Administrator on 2016/5/16.

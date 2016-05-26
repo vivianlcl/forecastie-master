@@ -30,7 +30,7 @@ import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Locale;
 
-import cz.martykan.forecastie.R;
+import com.lcl.thumbweather.R;
 
 public class WidgetProvider extends AppWidgetProvider {
 
@@ -91,7 +91,7 @@ public class WidgetProvider extends AppWidgetProvider {
         paint.setColor(Color.WHITE);
         paint.setTextSize(150);
         paint.setTextAlign(Paint.Align.CENTER);
-        myCanvas.drawText(text, 180, 180, paint);
+        myCanvas.drawText(text, 120, 180, paint);
         return myBitmap;
     }
 

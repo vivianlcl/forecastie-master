@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import cz.martykan.forecastie.R;
+import com.lcl.thumbweather.R;
 
 public class RecyclerViewFragment extends Fragment {
 

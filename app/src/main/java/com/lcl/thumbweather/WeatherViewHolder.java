@@ -4,8 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import cz.martykan.forecastie.R;
-
 public class WeatherViewHolder extends RecyclerView.ViewHolder {
     protected TextView itemDate;
     protected TextView itemTemperature;

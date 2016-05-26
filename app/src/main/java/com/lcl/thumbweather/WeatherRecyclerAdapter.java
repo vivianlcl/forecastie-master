@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import cz.martykan.forecastie.R;
+import com.lcl.thumbweather.R;
 
 public class WeatherRecyclerAdapter extends RecyclerView.Adapter<WeatherViewHolder> {
     private List<Weather> itemList;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cz.martykan.forecastie">
+    package="com.lcl.thumbweather">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -40,7 +40,7 @@
         </receiver>
         <service
             android:name="com.lcl.thumbweather.DashClockWeatherExtension"
-            android:icon="@drawable/ic_cloud_white_24dp"
+            android:icon="@mipmap/umbrella"
             android:label="@string/app_name"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
             <intent-filter>

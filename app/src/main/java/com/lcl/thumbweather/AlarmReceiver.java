@@ -21,7 +21,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Locale;
 
-import cz.martykan.forecastie.R;
+import com.lcl.thumbweather.R;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -29,6 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.e("-LCL","AlarmReceiver--->onReceive:Action="+intent.getAction());
         this.context = context;
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -50,7 +51,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void getWeather() {
-        Log.d("Alarm", "Recurring alarm; requesting download service.");
+        Log.e("-LCL-Alarm", "Recurring alarm; requesting download service.");
         boolean failed;
         if (isNetworkAvailable()) {
             failed = false;
@@ -79,6 +80,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         @Override
         protected Void doInBackground(String... params) {
+            Log.e("-LCL","GetLongTermWeatherTask:doInBackground");
             String result = "";
             try {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -120,6 +122,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         @Override
         protected Void doInBackground(String... params) {
+            Log.e("-LCL","GetLongTermWeatherTask:doInBackground");
             String result = "";
             try {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -154,6 +157,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     public static void setRecurringAlarm(Context context) {
+        Log.e("-LCL","setRecurringAlarm");
         String interval = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString("refreshInterval", "1");
         Intent refresh = new Intent(context, AlarmReceiver.class);

@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import cz.martykan.forecastie.R;
+import com.lcl.thumbweather.R;
 
 public class Weather {
 

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "cz.martykan.forecastie"
+        applicationId "com.lcl.thumbweather"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 12

@@ -61,8 +61,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import cz.martykan.forecastie.R;
-
+import com.lcl.thumbweather.R;
+/**
+ * Created by Administrator on 2016/5/10.
+ */
 public class MainActivity extends AppCompatActivity implements LocationListener {
     private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1;
     public static final int SHOW_LOCATOIN =0;
@@ -142,10 +144,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         progressDialog = new ProgressDialog(MainActivity.this);
 
-        // Load toolbar
+        // 加载 toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //属性：无标题
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        //属性：设置Logo图标
         toolbar.setLogo(R.mipmap.umbrella_white);
         if (darkTheme) {
             toolbar.setPopupTheme(R.style.AppTheme_PopupOverlay_Dark);
@@ -659,9 +663,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         if (destroyed) {
             return;
         }
-
+        //实例化ViewPagerAdapter类
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        //temper line chart
+        //添加未来五天温度趋势折线图显示界面
         Bundle bundleTemper = new Bundle();
         bundleTemper.putInt("day", 3);
         bundleTemper.putParcelableArrayList("list",temper);
@@ -669,18 +673,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         temperLineChartFragemnt.setArguments(bundleTemper);
         viewPagerAdapter.addFragment(temperLineChartFragemnt,getString(R.string.temper));
 
+        //添加今日天气信息显示界面
         Bundle bundleToday = new Bundle();
         bundleToday.putInt("day", 0);
         RecyclerViewFragment recyclerViewFragmentToday = new RecyclerViewFragment();
         recyclerViewFragmentToday.setArguments(bundleToday);
         viewPagerAdapter.addFragment(recyclerViewFragmentToday, getString(R.string.today));
 
+        //添加明日天气信息显示界面
         Bundle bundleTomorrow = new Bundle();
         bundleTomorrow.putInt("day", 1);
         RecyclerViewFragment recyclerViewFragmentTomorrow = new RecyclerViewFragment();
         recyclerViewFragmentTomorrow.setArguments(bundleTomorrow);
         viewPagerAdapter.addFragment(recyclerViewFragmentTomorrow, getString(R.string.tomorrow));
 
+        //添加后日天气信息显示界面
         Bundle bundle = new Bundle();
         bundle.putInt("day", 2);
         RecyclerViewFragment recyclerViewFragment = new RecyclerViewFragment();
@@ -688,7 +695,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         viewPagerAdapter.addFragment(recyclerViewFragment, getString(R.string.later));
 
         int currentPage = viewPager.getCurrentItem();
-
+        //添加ViewPagerAdapter适配到ViewPager
         viewPagerAdapter.notifyDataSetChanged();
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -711,6 +718,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         return true;
     }
 
+    /**
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -932,6 +944,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 Log.e("822-LCL-","response.isEmpty():"+response.isEmpty());
                 try {
                     URL url = provideURL(coords);
+                    Log.e("947-LCL-","URL = "+url.toString());
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     if (urlConnection.getResponseCode() == 200) {
                         InputStreamReader inputStreamReader = new InputStreamReader(urlConnection.getInputStream());
@@ -1002,7 +1015,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         @Override
         protected void onPostExecute(TaskOutput output) {
-            Log.e("-LCL-","onPostExecute");
+            Log.e("1015-LCL-","onPostExecute");
             if(loading == 1) {
                 progressDialog.dismiss();
             }

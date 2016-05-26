@@ -9,7 +9,7 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 
 import org.json.JSONObject;
 
-import cz.martykan.forecastie.R;
+import com.lcl.thumbweather.R;
 
 public class DashClockWeatherExtension extends DashClockExtension {
     @Override
