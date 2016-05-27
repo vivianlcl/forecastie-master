@@ -61,6 +61,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.google.gson.JsonSyntaxException;
 import com.lcl.thumbweather.R;
 /**
  * Created by Administrator on 2016/5/10.
@@ -234,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
 
         String lastLongterm = sp.getString("lastLongterm","");
-        Log.e("233-LCL-", "lastLongterm:" + lastLongterm.isEmpty());
+        Log.e("233-LCL-", "lastLongterm = null?" + lastLongterm.isEmpty());
         if (!lastLongterm.isEmpty()) {
             Log.e("235-LCL-","LongTermWeatherTask.");
             new LongTermWeatherTask().execute("cachedResponse", lastLongterm);
@@ -371,122 +372,84 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
      */
     private ParseResult parseTodayJson(String result) {
         Log.e("-LCL-", "---parseTodayJson---:result:" + result);
-//            if ("404".equals(code)) {
-//                return ParseResult.CITY_NOT_FOUND;
-//            }
-//            String city = beanToday.getName();
-//            String country = "";
-//            javaBeanToday.SysEntity sysEntity = beanToday.getSys();
-//            javaBeanToday.MainEntity mainEntity = beanToday.getMain();
-//            javaBeanToday.WindEntity windEntity = beanToday.getWind();
-//            country = sysEntity.getCountry();
-//            todayWeather.setSunrise(sysEntity.getSunrise()+"");
-//            todayWeather.setSunset(sysEntity.getSunset()+"");
-//            todayWeather.setCity(city);
-//            todayWeather.setCountry(country);
-//            todayWeather.setTemperature(mainEntity.getTemp()+"");
-//            todayWeather.setDescription(beanToday.getWeather().get(0).getDescription());
-//            todayWeather.setWind(windEntity.getSpeed()+"");
-//            todayWeather.setWindDirectionDegree(Double.parseDouble(windEntity.getDeg()+""));
-//            todayWeather.setPressure(mainEntity.getPressure()+"");
-//            todayWeather.setHumidity(mainEntity.getHumidity()+"");
-//            if (beanToday.getRain() != null){
-//                todayWeather.setRain(beanToday.getRain());
-//            }else {
-//                if (beanToday.getSnow()!=null){
-//                    todayWeather.setRain(beanToday.getSnow());
-//                }
-//            }
-//
-//
-//            final String idString = beanToday.getWeather().get(0).getId()+"";
-//            todayWeather.setId(idString);
-//            todayWeather.setIcon(setWeatherIcon(Integer.parseInt(idString), Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
-//
-//            todayWeather.setTemp_max(mainEntity.getTemp_max()+"");
-//            todayWeather.setTemp_min(mainEntity.getTemp_min()+"");
-//            temperToday.add(mapTemper(todayWeather,0));
-//           //保存最新的天气数据到系统SharedPreferences.
-//            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
-//            editor.putString("lastToday", result);
-//            editor.commit();
+        if (result.contains("<html>")){
 
+        }
 
-    try{
+        try{
             //创建一个对象.
             JSONObject reader = new JSONObject(result);
 
-    //获取的天气数据信息有错,返回错误码:CITY_NOT_FOUND.
-    final String code = reader.optString("cod");
-    if ("404".equals(code)) {
-        return ParseResult.CITY_NOT_FOUND;
-    }
-
-    //解析城市,日出,日落等数据保存到todayWeather对象中.
-    String city = reader.getString("name");
-    String country = "";
-    JSONObject countryObj = reader.optJSONObject("sys");
-    if (countryObj != null) {
-        country = countryObj.getString("country");
-        todayWeather.setSunrise(countryObj.getString("sunrise"));
-        todayWeather.setSunset(countryObj.getString("sunset"));
-    }
-    todayWeather.setCity(city);
-    todayWeather.setCountry(country);
-
-    JSONObject main = reader.getJSONObject("main");
-
-    todayWeather.setTemperature(main.getString("temp"));
-    todayWeather.setDescription(reader.getJSONArray("weather").getJSONObject(0).getString("description"));
-    JSONObject windObj = reader.getJSONObject("wind");
-    todayWeather.setWind(windObj.getString("speed"));
-    if (windObj.has("deg")) {
-        todayWeather.setWindDirectionDegree(windObj.getDouble("deg"));
-    } else {
-        Log.e("parseTodayJson", "No wind direction available");
-        todayWeather.setWindDirectionDegree(null);
-    }
-    todayWeather.setPressure(main.getString("pressure"));
-    todayWeather.setHumidity(main.getString("humidity"));
-
-    JSONObject rainObj = reader.optJSONObject("rain");
-    String rain;
-    if (rainObj != null) {
-        rain = getRainString(rainObj);
-    } else {
-        JSONObject snowObj = reader.optJSONObject("snow");
-        if (snowObj != null) {
-            rain = getRainString(snowObj);
-        } else {
-            rain = "0";
+        //获取的天气数据信息有错,返回错误码:CITY_NOT_FOUND.
+        final String code = reader.optString("cod");
+        if ("404".equals(code)) {
+            return ParseResult.CITY_NOT_FOUND;
         }
-    }
-    //将解析出来的雨水量,温度,图标等信息保存到todayWeather.
-    todayWeather.setRain(rain);
 
-    final String idString = reader.getJSONArray("weather").getJSONObject(0).getString("id");
-    todayWeather.setId(idString);
-    todayWeather.setIcon(setWeatherIcon(Integer.parseInt(idString), Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+        //解析城市,日出,日落等数据保存到todayWeather对象中.
+        String city = reader.getString("name");
+        String country = "";
+        JSONObject countryObj = reader.optJSONObject("sys");
+        if (countryObj != null) {
+            country = countryObj.getString("country");
+            todayWeather.setSunrise(countryObj.getString("sunrise"));
+            todayWeather.setSunset(countryObj.getString("sunset"));
+        }
+        todayWeather.setCity(city);
+        todayWeather.setCountry(country);
 
-    todayWeather.setTemp_max(main.getString("temp_max"));
-    todayWeather.setTemp_min(main.getString("temp_min"));
-    temperToday.add(mapTemper(todayWeather,0));
+        JSONObject main = reader.getJSONObject("main");
 
-    //保存最新的天气数据到系统SharedPreferences.
-    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
-    editor.putString("lastToday", result);
-    editor.commit();
+        todayWeather.setTemperature(main.getString("temp"));
+        todayWeather.setDescription(reader.getJSONArray("weather").getJSONObject(0).getString("description"));
+        JSONObject windObj = reader.getJSONObject("wind");
+        todayWeather.setWind(windObj.getString("speed"));
+        if (windObj.has("deg")) {
+            todayWeather.setWindDirectionDegree(windObj.getDouble("deg"));
+        } else {
+            Log.e("parseTodayJson", "No wind direction available");
+            todayWeather.setWindDirectionDegree(null);
+        }
+        todayWeather.setPressure(main.getString("pressure"));
+        todayWeather.setHumidity(main.getString("humidity"));
 
-} catch (JSONException e) {
+        JSONObject rainObj = reader.optJSONObject("rain");
+        String rain;
+        if (rainObj != null) {
+            rain = getRainString(rainObj);
+        } else {
+            JSONObject snowObj = reader.optJSONObject("snow");
+            if (snowObj != null) {
+                rain = getRainString(snowObj);
+            } else {
+                rain = "0";
+            }
+        }
+        //将解析出来的雨水量,温度,图标等信息保存到todayWeather.
+        todayWeather.setRain(rain);
+
+        final String idString = reader.getJSONArray("weather").getJSONObject(0).getString("id");
+        todayWeather.setId(idString);
+        todayWeather.setIcon(setWeatherIcon(Integer.parseInt(idString), Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+
+        todayWeather.setTemp_max(main.getString("temp_max"));
+        todayWeather.setTemp_min(main.getString("temp_min"));
+        temperToday.add(mapTemper(todayWeather,0));
+
+        //保存最新的天气数据到系统SharedPreferences.
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
+        editor.putString("lastToday", result);
+        editor.commit();
+
+    } catch (JSONException e) {
         //处理Json解析异常捕获,返回错误码:JSON_EXCEPTION.
-        Log.e("JSONException Data", result);
+        Log.e("-LCL--->JSONException", result);
         e.printStackTrace();
         return ParseResult.JSON_EXCEPTION;
-        }
+    }
 
         //解析天气数据成功,返回结果码:OK.
         return ParseResult.OK;
-
     }
 
     private void updateTodayWeatherUI() {
@@ -555,9 +518,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
     }
     public ParseResult parseLongTermJson(String result) {
+        Log.e("-LCL-", "---parseLongTermJson---:result:" + result);
         int i;
-        if (!result.isEmpty()) {
-            Log.e("-LCL-", "---parseLongTermJson---:result:" + result);
+        try {
+
+
             final Gson gson = new Gson();
             javaBean javaben = gson.fromJson(result, javaBean.class);
 
@@ -647,7 +612,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
             editor.putString("lastLongterm", result);
             editor.commit();
-        }else {
+        }catch (JsonSyntaxException e){
             return ParseResult.JSON_EXCEPTION;
         }
         //add everyday's temper information into temperlist.
@@ -917,18 +882,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     abstract class GenericRequestTask extends AsyncTask<String, String, TaskOutput> {
         private void incLoadingCounter() {
-            Log.e("897-LCL-","incLoadingCounter:loading"+loading);
+            Log.e("897-LCL-","incLoadingCounter:loading = "+loading);
             loading++;
         }
 
         private void decLoadingCounter() {
-            Log.e("902-LCL-","decLoadingCounter:loading"+loading);
+            Log.e("902-LCL-","decLoadingCounter:loading = "+loading);
             loading--;
         }
 
         @Override
         protected void onPreExecute() {
-            Log.e("908-LCL-","onPreExecute");
+            Log.e("908-LCL-", "GenericRequestTask:onPreExecute");
             incLoadingCounter();
             if(!progressDialog.isShowing()) {
                 progressDialog.setMessage(getString(R.string.downloading_data));
@@ -943,7 +908,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             final TaskOutput output = new TaskOutput();
 
             String response = "";
-//            volleyResponse = "";
             String[] coords = new String[]{};
 
             if (params != null && params.length > 0) {
@@ -960,11 +924,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
 
             if (response.isEmpty()) {
-                Log.e("822-LCL-","response.isEmpty():"+response.isEmpty());
+                Log.e("822-LCL-", "response.isEmpty():" + response.isEmpty());
                 try {
                     URL url = provideURL(coords);
-                    Log.e("947-LCL-","URL = "+url.toString());
+                    Log.e("947-LCL-", "URL = " + url.toString());
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    Log.e("925-LCL-", "urlConnection.getResponseCode() = " + urlConnection.getResponseCode());
+
                     if (urlConnection.getResponseCode() == 200) {
                         InputStreamReader inputStreamReader = new InputStreamReader(urlConnection.getInputStream());
                         BufferedReader r = new BufferedReader(inputStreamReader);
@@ -977,17 +943,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         close(r);
                         urlConnection.disconnect();
                         // Background work finished successfully
-                        Log.i("Task", "done successfully");
-                        output.taskResult = TaskResult.SUCCESS;
+                        if (response.contains("<html>")){
+                            Log.e("947-LCL-","TaskResult.BAD_RESPONSE");
+                            output.taskResult = TaskResult.BAD_RESPONSE;
+                        }
+                        else if (response.contains("{\"city\":")){
+                            Log.e("Task", "done successfully:response = " + response);
+                            output.taskResult = TaskResult.SUCCESS;
+                        }
                     }
                     else if (urlConnection.getResponseCode() == 429) {
                         // Too many requests
-                        Log.i("Task", "too many requests");
+                        Log.e("Task", "too many requests");
                         output.taskResult = TaskResult.TOO_MANY_REQUESTS;
                     }
                     else {
                         // Bad response from server
-                        Log.i("Task", "bad response");
+                        Log.e("Task", "bad response");
                         output.taskResult = TaskResult.BAD_RESPONSE;
                     }
                 } catch (IOException e) {
@@ -996,26 +968,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     // Exception while reading data from url connection
                     output.taskResult = TaskResult.IO_EXCEPTION;
                 }
-//                    RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-//                    StringRequest stringRequest = new StringRequest(url.toString(), new Response.Listener<String>() {
-//                        @Override
-//                        public void onResponse(String res) {
-//                            volleyResponse = res;
-//                            Log.d("830--LCL--", "response:" + res);
-//                            output.taskResult = TaskResult.SUCCESS;
-//                        }
-//                    }, new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError volleyError) {
-//                            Log.e("--LCL--","onErrorResponse:"+volleyError.getMessage(),volleyError);
-//                            output.taskResult = TaskResult.BAD_RESPONSE;
-//                            Toast.makeText(MainActivity.this, "获取天气信息失败，请检查您的网络", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                    queue.add(stringRequest);
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
             }
 
             if (TaskResult.SUCCESS.equals(output.taskResult)) {
@@ -1028,25 +980,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 }
                 output.parseResult = parseResult;
             }
-            Log.e("857-LCL-","parseResult:"+output.parseResult);
+            Log.e("857-LCL-", "parseResult:" + output.parseResult);
             return output;
         }
 
         @Override
         protected void onPostExecute(TaskOutput output) {
-            Log.e("1015-LCL-","onPostExecute");
+            Log.e("1015-LCL-", "onPostExecute");
             if(loading == 1) {
                 progressDialog.dismiss();
             }
             decLoadingCounter();
-
-            updateMainUI();
-
             handleTaskOutput(output);
+
         }
 
         protected final void handleTaskOutput(TaskOutput output) {
-            Log.e("1025-LCL-","handleTaskOutput:TaskOutput"+output);
+            Log.e("1025-LCL-","handleTaskOutput:TaskOutput"+output.taskResult);
             switch (output.taskResult) {
                 case SUCCESS: {
                     ParseResult parseResult = output.parseResult;
@@ -1054,6 +1004,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         Snackbar.make(appView, getString(R.string.msg_city_not_found), Snackbar.LENGTH_LONG).show();
                     } else if (ParseResult.JSON_EXCEPTION.equals(parseResult)) {
                         Snackbar.make(appView, getString(R.string.msg_err_parsing_json), Snackbar.LENGTH_LONG).show();
+                    }else{
+                        updateMainUI();
                     }
                     break;
                 }
@@ -1101,8 +1053,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         }
 
-
-
         protected void updateMainUI() { }
 
         protected abstract ParseResult parseResponse(String response);
@@ -1119,6 +1069,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         @Override
         protected ParseResult parseResponse(String response) {
+            Log.e("-LCL-","TodayWeatherTask:parseResponse");
             return parseTodayJson(response);
         }
 
@@ -1137,6 +1088,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     class LongTermWeatherTask extends GenericRequestTask {
         @Override
         protected ParseResult parseResponse(String response) {
+            Log.e("1083-LCL-","LongTermWeatherTask:parseResponse = "+response);
             return parseLongTermJson(response);
         }
 
