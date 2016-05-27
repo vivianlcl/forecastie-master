@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private List<Temper> temperLater2 = new ArrayList<>();
 
     private String recentCity = "";
+    private String todayDate = "";
     private ArrayList temper ;
     private Handler handler;
 
@@ -155,24 +156,20 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             toolbar.setPopupTheme(R.style.AppTheme_PopupOverlay_Dark);
         }
 
-        // Initialize textboxes
+        // 初始化控件 textboxes
         todayTemperature = (TextView) findViewById(R.id.todayTemperature);
         todayDescription = (TextView) findViewById(R.id.todayDescription);
         todayWind = (TextView) findViewById(R.id.todayWind);
         todayPressure = (TextView) findViewById(R.id.todayPressure);
         todayHumidity = (TextView) findViewById(R.id.todayHumidity);
-
-//        todayMaxTemper = (TextView)findViewById(R.id.todayMaxtemper);
-//        todayMinTemper = (TextView)findViewById(R.id.todayMinTemper);
         todaySunrise = (TextView) findViewById(R.id.todaySunrise);
         todaySunset = (TextView) findViewById(R.id.todaySunset);
-
         todayIcon = (TextView) findViewById(R.id.todayIcon);
         cityIs = (TextView)findViewById(R.id.city);
         weatherFont = Typeface.createFromAsset(this.getAssets(), "fonts/weather.ttf");
         todayIcon.setTypeface(weatherFont);
 
-        // Initialize viewPager
+        // 初始化 viewPager
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
 
@@ -180,10 +177,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         initMappings();
 
-        // Preload data from cache
+        // 预加载缓存的数据
         preloadWeather();
 
-        // Set autoupdater
+        // 设置自动更新
         AlarmReceiver.setRecurringAlarm(this);
     }
 
@@ -229,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 
         String lastToday = sp.getString("lastToday","");
-        Log.e("226-LCL-","lastToday:"+lastToday.isEmpty());
+        Log.e("226-LCL-","lastToday = null ? "+lastToday.isEmpty());
 
         if (!lastToday.isEmpty()) {
             Log.e("229-LCL-","TodayWeatherTask.");
@@ -373,76 +370,118 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
      * todayWeather今天天气数据的一个对象,用来存储我们需要显示的天气信息
      */
     private ParseResult parseTodayJson(String result) {
-        try {
+        Log.e("-LCL-", "---parseTodayJson---:result:" + result);
+//            if ("404".equals(code)) {
+//                return ParseResult.CITY_NOT_FOUND;
+//            }
+//            String city = beanToday.getName();
+//            String country = "";
+//            javaBeanToday.SysEntity sysEntity = beanToday.getSys();
+//            javaBeanToday.MainEntity mainEntity = beanToday.getMain();
+//            javaBeanToday.WindEntity windEntity = beanToday.getWind();
+//            country = sysEntity.getCountry();
+//            todayWeather.setSunrise(sysEntity.getSunrise()+"");
+//            todayWeather.setSunset(sysEntity.getSunset()+"");
+//            todayWeather.setCity(city);
+//            todayWeather.setCountry(country);
+//            todayWeather.setTemperature(mainEntity.getTemp()+"");
+//            todayWeather.setDescription(beanToday.getWeather().get(0).getDescription());
+//            todayWeather.setWind(windEntity.getSpeed()+"");
+//            todayWeather.setWindDirectionDegree(Double.parseDouble(windEntity.getDeg()+""));
+//            todayWeather.setPressure(mainEntity.getPressure()+"");
+//            todayWeather.setHumidity(mainEntity.getHumidity()+"");
+//            if (beanToday.getRain() != null){
+//                todayWeather.setRain(beanToday.getRain());
+//            }else {
+//                if (beanToday.getSnow()!=null){
+//                    todayWeather.setRain(beanToday.getSnow());
+//                }
+//            }
+//
+//
+//            final String idString = beanToday.getWeather().get(0).getId()+"";
+//            todayWeather.setId(idString);
+//            todayWeather.setIcon(setWeatherIcon(Integer.parseInt(idString), Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+//
+//            todayWeather.setTemp_max(mainEntity.getTemp_max()+"");
+//            todayWeather.setTemp_min(mainEntity.getTemp_min()+"");
+//            temperToday.add(mapTemper(todayWeather,0));
+//           //保存最新的天气数据到系统SharedPreferences.
+//            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
+//            editor.putString("lastToday", result);
+//            editor.commit();
+
+
+    try{
             //创建一个对象.
             JSONObject reader = new JSONObject(result);
 
-            //获取的天气数据信息有错,返回错误码:CITY_NOT_FOUND.
-            final String code = reader.optString("cod");
-            if ("404".equals(code)) {
-                return ParseResult.CITY_NOT_FOUND;
-            }
+    //获取的天气数据信息有错,返回错误码:CITY_NOT_FOUND.
+    final String code = reader.optString("cod");
+    if ("404".equals(code)) {
+        return ParseResult.CITY_NOT_FOUND;
+    }
 
-            //解析城市,日出,日落等数据保存到todayWeather对象中.
-            String city = reader.getString("name");
-            String country = "";
-            JSONObject countryObj = reader.optJSONObject("sys");
-            if (countryObj != null) {
-                country = countryObj.getString("country");
-                todayWeather.setSunrise(countryObj.getString("sunrise"));
-                todayWeather.setSunset(countryObj.getString("sunset"));
-            }
-            todayWeather.setCity(city);
-            todayWeather.setCountry(country);
+    //解析城市,日出,日落等数据保存到todayWeather对象中.
+    String city = reader.getString("name");
+    String country = "";
+    JSONObject countryObj = reader.optJSONObject("sys");
+    if (countryObj != null) {
+        country = countryObj.getString("country");
+        todayWeather.setSunrise(countryObj.getString("sunrise"));
+        todayWeather.setSunset(countryObj.getString("sunset"));
+    }
+    todayWeather.setCity(city);
+    todayWeather.setCountry(country);
 
-            JSONObject main = reader.getJSONObject("main");
+    JSONObject main = reader.getJSONObject("main");
 
-            todayWeather.setTemperature(main.getString("temp"));
-            todayWeather.setDescription(reader.getJSONArray("weather").getJSONObject(0).getString("description"));
-            JSONObject windObj = reader.getJSONObject("wind");
-            todayWeather.setWind(windObj.getString("speed"));
-            if (windObj.has("deg")) {
-                todayWeather.setWindDirectionDegree(windObj.getDouble("deg"));
-            } else {
-                Log.e("parseTodayJson", "No wind direction available");
-                todayWeather.setWindDirectionDegree(null);
-            }
-            todayWeather.setPressure(main.getString("pressure"));
-            todayWeather.setHumidity(main.getString("humidity"));
+    todayWeather.setTemperature(main.getString("temp"));
+    todayWeather.setDescription(reader.getJSONArray("weather").getJSONObject(0).getString("description"));
+    JSONObject windObj = reader.getJSONObject("wind");
+    todayWeather.setWind(windObj.getString("speed"));
+    if (windObj.has("deg")) {
+        todayWeather.setWindDirectionDegree(windObj.getDouble("deg"));
+    } else {
+        Log.e("parseTodayJson", "No wind direction available");
+        todayWeather.setWindDirectionDegree(null);
+    }
+    todayWeather.setPressure(main.getString("pressure"));
+    todayWeather.setHumidity(main.getString("humidity"));
 
-            JSONObject rainObj = reader.optJSONObject("rain");
-            String rain;
-            if (rainObj != null) {
-                rain = getRainString(rainObj);
-            } else {
-                JSONObject snowObj = reader.optJSONObject("snow");
-                if (snowObj != null) {
-                    rain = getRainString(snowObj);
-                } else {
-                    rain = "0";
-                }
-            }
-            //将解析出来的雨水量,温度,图标等信息保存到todayWeather.
-            todayWeather.setRain(rain);
+    JSONObject rainObj = reader.optJSONObject("rain");
+    String rain;
+    if (rainObj != null) {
+        rain = getRainString(rainObj);
+    } else {
+        JSONObject snowObj = reader.optJSONObject("snow");
+        if (snowObj != null) {
+            rain = getRainString(snowObj);
+        } else {
+            rain = "0";
+        }
+    }
+    //将解析出来的雨水量,温度,图标等信息保存到todayWeather.
+    todayWeather.setRain(rain);
 
-            final String idString = reader.getJSONArray("weather").getJSONObject(0).getString("id");
-            todayWeather.setId(idString);
-            todayWeather.setIcon(setWeatherIcon(Integer.parseInt(idString), Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+    final String idString = reader.getJSONArray("weather").getJSONObject(0).getString("id");
+    todayWeather.setId(idString);
+    todayWeather.setIcon(setWeatherIcon(Integer.parseInt(idString), Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
 
-            todayWeather.setTemp_max(main.getString("temp_max"));
-            todayWeather.setTemp_min(main.getString("temp_min"));
-            temperToday.add(mapTemper(todayWeather,0));
+    todayWeather.setTemp_max(main.getString("temp_max"));
+    todayWeather.setTemp_min(main.getString("temp_min"));
+    temperToday.add(mapTemper(todayWeather,0));
 
-            //保存最新的天气数据到系统SharedPreferences.
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
-            editor.putString("lastToday", result);
-            editor.commit();
+    //保存最新的天气数据到系统SharedPreferences.
+    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
+    editor.putString("lastToday", result);
+    editor.commit();
 
-        } catch (JSONException e) {
-            //处理Json解析异常捕获,返回错误码:JSON_EXCEPTION.
-            Log.e("JSONException Data", result);
-            e.printStackTrace();
-            return ParseResult.JSON_EXCEPTION;
+} catch (JSONException e) {
+        //处理Json解析异常捕获,返回错误码:JSON_EXCEPTION.
+        Log.e("JSONException Data", result);
+        e.printStackTrace();
+        return ParseResult.JSON_EXCEPTION;
         }
 
         //解析天气数据成功,返回结果码:OK.
@@ -460,18 +499,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
         String temperature = todayWeather.getTemperature();
-//        String temperatureMax = todayWeather.getTemp_max();
-//        String temperatureMin = todayWeather.getTemp_min();
         if (sp.getString("unit", "C").equals("C")) {
             temperature = Float.parseFloat(temperature) - 273.15 + "";
-//            temperatureMax = Float.parseFloat(temperatureMax) - 273.15 + "";
-//            temperatureMin = Float.parseFloat(temperatureMin) - 273.15 + "";
         }
 
         if (sp.getString("unit", "C").equals("F")) {
             temperature = (((9 * (Float.parseFloat(temperature) - 273.15)) / 5) + 32) + "";
-//            temperatureMax = (((9 * (Float.parseFloat(temperatureMax) - 273.15)) / 5) + 32) + "";
-//            temperatureMin = (((9 * (Float.parseFloat(temperatureMin) - 273.15)) / 5) + 32) + "";
         }
 
         double wind = Double.parseDouble(todayWeather.getWind());
@@ -498,24 +531,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             temperature = temperature.substring(0, temperature.indexOf(".") + 2);
         }
 
-//        if (new BigDecimal(temperatureMax).setScale(0, RoundingMode.DOWN).intValue() == 0) {
-//            temperatureMax = "0";
-//        } else {
-//            temperatureMax = temperature.substring(0, temperatureMax.indexOf(".") + 2);
-//        }
-//
-//        if (new BigDecimal(temperatureMin).setScale(0, RoundingMode.DOWN).intValue() == 0) {
-//            temperatureMin = "0";
-//        } else {
-//            temperatureMin = temperature.substring(0, temperatureMin.indexOf(".") + 2);
-//        }
 
 
         todayTemperature.setText(temperature + " °" + sp.getString("unit", "C"));
-//        todayMaxTemper.setText(temperatureMax + " °" + sp.getString("unit", "C"));
-//        todayMinTemper.setText(temperatureMin + " °" + sp.getString("unit", "C"));
-        Log.e("-LCL-","todayWeather.getRain().isEmpty()"+todayWeather.getRain().isEmpty());
-        if (!todayWeather.getRain().isEmpty()) {
+        if (todayWeather.getRain() != null) {
             if (Float.parseFloat(todayWeather.getRain()) > 0.1) {
                 todayDescription.setText(todayWeather.getDescription().substring(0, 1).toUpperCase() +
                         todayWeather.getDescription().substring(1) +
@@ -1093,6 +1112,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     class TodayWeatherTask extends GenericRequestTask {
         @Override
         protected void onPreExecute() {
+            Log.e("-LCL-","TodayWeatherTask:onPreExecute");
             loading = 0;
             super.onPreExecute();
         }

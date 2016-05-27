@@ -14,7 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lcl.thumbweather.R;
+
+import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
@@ -30,6 +33,9 @@ public class TemperLineChartFragemnt extends Fragment{
     protected LineChartData data ;
     protected List<Line> lines;
     private ArrayList temper;
+
+    public final static String[] days = new String[] { "Mon", "Tue", "Wen",
+            "Thu", "Fri", "Sat", "Sun", };
 
     private Bundle bundle;
     public TemperLineChartFragemnt(){
@@ -54,6 +60,7 @@ public class TemperLineChartFragemnt extends Fragment{
                 Viewport viewport = initViewPort();
                 lineChartView.setMaximumViewport(viewport);
                 lineChartView.setCurrentViewport(viewport);
+                lineChartView.setZoomType(ZoomType.HORIZONTAL);
             }
         }).start();
         return view;
@@ -61,11 +68,7 @@ public class TemperLineChartFragemnt extends Fragment{
 
     private Viewport initViewPort(){
         Log.e("-LCL-", "initViewPort");
-        Viewport viewport = new Viewport();
-        viewport.top = 40f;
-        viewport.bottom = 0f;
-        viewport.left = 0;
-        viewport.right =6;
+        Viewport viewport = new Viewport(0, 50, 6, 0);
 
         return viewport;
     }
@@ -85,8 +88,8 @@ public class TemperLineChartFragemnt extends Fragment{
                         highTemper = highTemper>Float.parseFloat(temperlist.get(j).getHighTemper0())?highTemper:Float.parseFloat(temperlist.get(j).getHighTemper0());
                         lowTemper = lowTemper<Float.parseFloat(temperlist.get(j).getLowTemper0())?lowTemper:Float.parseFloat(temperlist.get(j).getLowTemper0());
                     }
-                    pointHighValueList.add(new PointValue(i+1,highTemper-273.15f));
-                    pointLowValueList.add(new PointValue(i+1,lowTemper-273.15f));
+                    pointHighValueList.add(new PointValue(i,highTemper-273.15f));
+                    pointLowValueList.add(new PointValue(i,lowTemper-273.15f));
 
 
             }
@@ -111,20 +114,22 @@ public class TemperLineChartFragemnt extends Fragment{
     }
 
     public LineChartData initData(List<Line> lines){
-        Log.e("-LCL-","initData");
+        Log.e("-LCL-", "initData");
         LineChartData data = new LineChartData(lines);
+        int numValues = 7;
+        List<AxisValue> axisValues = new ArrayList<AxisValue>();
+        for (int i = 0; i < numValues; ++i) {
+            axisValues.add(new AxisValue(i).setLabel(days[i]));
+        }
+//        axisX.setName("Date");
+//        axisY.setName("Temperature");
+//
+//        data.setAxisYLeft(axisY);
+//        data.setAxisXBottom(axisX);
+        data.setAxisXBottom(new Axis(axisValues).setHasLines(false));
+        data.setAxisYLeft(new Axis().setHasLines(false)
+                .setMaxLabelChars(3));
 
-        Axis axisX = new Axis();
-        Axis axisY = new Axis();
-        axisX.setTextColor(Color.WHITE);
-        axisY.setTextColor(Color.WHITE);
-
-        //axisX.setInside(true);
-        //axisX.setName("Date");
-        //axisY.setName("Temperature");
-
-        data.setAxisYLeft(axisY);
-        data.setAxisXBottom(axisX);
         data.setValueLabelTextSize(10);
         data.setValueLabelsTextColor(Color.WHITE);
         data.setValueLabelBackgroundEnabled(false);

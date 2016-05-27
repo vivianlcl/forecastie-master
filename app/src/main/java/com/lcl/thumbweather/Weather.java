@@ -66,7 +66,7 @@ public class Weather {
     private Double windDirectionDegree;
     private String pressure;
     private String humidity;
-    private String rain;
+    private String rain = null;
     private String id;
     private String icon;
     private Date sunrise;
