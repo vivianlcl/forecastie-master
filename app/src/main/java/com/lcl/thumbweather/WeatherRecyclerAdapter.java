@@ -38,9 +38,6 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<WeatherViewHold
     @Override
     public void onBindViewHolder(WeatherViewHolder customViewHolder, int i) {
         Weather weatherItem = itemList.get(i);
-        if (weatherItem.getDay() == 3) {
-
-        }else{
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
             String temperature = weatherItem.getTemperature();
@@ -140,7 +137,6 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<WeatherViewHold
                     MainActivity.localize(sp, context, "pressureUnit", "hPa"));
             customViewHolder.itemHumidity.setText(context.getString(R.string.humidity) + ": " + weatherItem.getHumidity() + " %");
         }
-    }
     @Override
     public int getItemCount() {
         return (null != itemList ? itemList.size() : 0);

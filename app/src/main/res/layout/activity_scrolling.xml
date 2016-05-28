@@ -81,21 +81,6 @@
                         android:textColor="@android:color/white"
                         android:textSize="16dp" />
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/todayMaxtemper"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Max_Temperature: 0 °C"-->
-                        <!--android:textColor="@android:color/white"-->
-                        <!--android:textSize="16dp" />-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/todayMinTemper"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Min_Temperature:0 °C"-->
-                        <!--android:textColor="@android:color/white"-->
-                        <!--android:textSize="16dp" />-->
                     <TextView
                         android:id="@+id/todaySunrise"
                         android:layout_width="wrap_content"
@@ -150,6 +135,7 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

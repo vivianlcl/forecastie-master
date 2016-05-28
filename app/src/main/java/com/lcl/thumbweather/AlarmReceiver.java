@@ -160,6 +160,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Log.e("-LCL","setRecurringAlarm");
         String interval = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString("refreshInterval", "1");
+        Log.e("-LCL","setRecurringAlarm:interval = "+interval);
         Intent refresh = new Intent(context, AlarmReceiver.class);
         PendingIntent recurringRefresh = PendingIntent.getBroadcast(context,
                 0, refresh, PendingIntent.FLAG_CANCEL_CURRENT);

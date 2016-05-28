@@ -1,8 +1,11 @@
 package com.lcl.thumbweather;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,8 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.lcl.thumbweather.R;
 
@@ -33,13 +39,21 @@ public class TemperLineChartFragemnt extends Fragment{
     protected LineChartData data ;
     protected List<Line> lines;
     private ArrayList temper;
+    private String dateString;
+    private Context context;
+    private Weather weatherItem;
+    private Date todayDate;
+
+    private int i = 0;
+
 
     public final static String[] days = new String[] { "Mon", "Tue", "Wen",
             "Thu", "Fri", "Sat", "Sun", };
 
     private Bundle bundle;
-    public TemperLineChartFragemnt(){
-
+    public TemperLineChartFragemnt(Context context,Weather weatherItem){
+            this.context = context;
+            this.weatherItem = weatherItem;
     }
 
     @Nullable
@@ -52,10 +66,11 @@ public class TemperLineChartFragemnt extends Fragment{
         new Thread(new Runnable() {
             @Override
             public void run() {
+                i = getI();
                 lineChartView.setLineChartData(null);
                 temper = bundle.getParcelableArrayList("list");
                 lines = initLine(temper);
-                data = initData(lines);
+                data = initData(lines,i);
                 lineChartView.setLineChartData(data);
                 Viewport viewport = initViewPort();
                 lineChartView.setMaximumViewport(viewport);
@@ -113,13 +128,13 @@ public class TemperLineChartFragemnt extends Fragment{
         return lineList;
     }
 
-    public LineChartData initData(List<Line> lines){
+    public LineChartData initData(List<Line> lines,int j){
         Log.e("-LCL-", "initData");
         LineChartData data = new LineChartData(lines);
         int numValues = 7;
         List<AxisValue> axisValues = new ArrayList<AxisValue>();
         for (int i = 0; i < numValues; ++i) {
-            axisValues.add(new AxisValue(i).setLabel(days[i]));
+            axisValues.add(new AxisValue(i).setLabel(days[(i+j)%7]));
         }
 //        axisX.setName("Date");
 //        axisY.setName("Temperature");
@@ -136,6 +151,48 @@ public class TemperLineChartFragemnt extends Fragment{
         data.setValueLabelTypeface(Typeface.MONOSPACE);
 
         return data;
+    }
+
+    public int getI(){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String defaultDateFormat = context.getResources().getStringArray(R.array.dateFormatsValues)[0];
+        String dateFormat = sp.getString("dateFormat", defaultDateFormat);
+        if ("custom".equals(dateFormat)) {
+            dateFormat = sp.getString("dateFormatCustom", defaultDateFormat);
+        }
+
+        TimeZone tz = TimeZone.getDefault();
+
+        try {
+            SimpleDateFormat resultFormat = new SimpleDateFormat(dateFormat);
+            resultFormat.setTimeZone(tz);
+            dateString = resultFormat.format(weatherItem.getDate());
+        } catch (IllegalArgumentException e) {
+            dateString = context.getResources().getString(R.string.error_dateFormat);
+        }
+        i = 0;
+        Log.d("-LCL-","dateString="+dateString);
+        if (dateString.contains("周二")){
+            i = 1;
+        }else if (dateString.contains("周三")){
+            i = 2;
+        }else if (dateString.contains("周四")){
+            i = 3;
+
+        }else if (dateString.contains("周五")){
+            i = 4;
+
+        }else if (dateString.contains("周六")){
+            i = 5;
+
+        }else if (dateString.contains("周日")){
+            i = 6;
+
+        }else {
+            //do nothing
+        }
+
+        return i;
     }
 
 }

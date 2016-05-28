@@ -77,7 +77,7 @@ public class javaBean {
         private SysEntity sys;
         private List<WeatherEntity> weather;
         private String dt_txt;
-        private RainEntity rain;
+        private RainEntity rain = null;
         private MainEntity main;
 
         public RainEntity getRain() {
@@ -248,7 +248,7 @@ public class javaBean {
             /**
              *  "3h":0.01
              */
-            private float threeh;
+            private float threeh = 0;
 
             public float getThreeh() {
                 return threeh;

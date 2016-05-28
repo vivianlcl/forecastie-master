@@ -56,6 +56,7 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -111,9 +112,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private List<Temper> temperLater2 = new ArrayList<>();
 
     private String recentCity = "";
-    private String todayDate = "";
     private ArrayList temper ;
-    private Handler handler;
 
 
     private static void close(Closeable x) {
@@ -201,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override 
     public void onResume() {
+        Log.e("-LCL-","onResume");
         super.onResume();
         boolean darkTheme =
                 PreferenceManager.getDefaultSharedPreferences(this).getBoolean("darkTheme", false);
@@ -245,10 +245,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     private void getTodayWeather() {
+        Log.e("-LCL-","getTodayWeather");
         new TodayWeatherTask().execute();
     }
 
     private void getLongTermWeather() {
+        Log.e("-LCL-","getLongTermWeather");
         new LongTermWeatherTask().execute();
     }
 
@@ -372,9 +374,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
      */
     private ParseResult parseTodayJson(String result) {
         Log.e("-LCL-", "---parseTodayJson---:result:" + result);
-        if (result.contains("<html>")){
-
-        }
 
         try{
             //创建一个对象.
@@ -386,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             return ParseResult.CITY_NOT_FOUND;
         }
 
+        todayWeather.setDate(reader.getString("dt"));
         //解析城市,日出,日落等数据保存到todayWeather对象中.
         String city = reader.getString("name");
         String country = "";
@@ -435,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         todayWeather.setTemp_max(main.getString("temp_max"));
         todayWeather.setTemp_min(main.getString("temp_min"));
         temperToday.add(mapTemper(todayWeather,0));
+
 
         //保存最新的天气数据到系统SharedPreferences.
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
@@ -519,9 +520,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
     public ParseResult parseLongTermJson(String result) {
         Log.e("-LCL-", "---parseLongTermJson---:result:" + result);
-        int i;
         try {
-
 
             final Gson gson = new Gson();
             javaBean javaben = gson.fromJson(result, javaBean.class);
@@ -545,7 +544,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             int later_time2 = 0;
 
             Log.e("525-LCL-", "listEntities.size():" + listEntities.size());
-            for (i = 0; i < listEntities.size(); i++) {
+            for (int i = 0; i < listEntities.size(); i++) {
                 Weather weather = new Weather();
                 javaBean.ListEntity list = listEntities.get(i);
                 javaBean.ListEntity.MainEntity main = list.getMain();
@@ -653,7 +652,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Bundle bundleTemper = new Bundle();
         bundleTemper.putInt("day", 3);
         bundleTemper.putParcelableArrayList("list",temper);
-        TemperLineChartFragemnt temperLineChartFragemnt = new TemperLineChartFragemnt();
+        TemperLineChartFragemnt temperLineChartFragemnt = new TemperLineChartFragemnt(this,todayWeather);
         temperLineChartFragemnt.setArguments(bundleTemper);
         viewPagerAdapter.addFragment(temperLineChartFragemnt,getString(R.string.temper));
 
@@ -906,6 +905,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         protected TaskOutput doInBackground(String... params) {
             Log.e("794-LCL-", "doInBackground.");
             final TaskOutput output = new TaskOutput();
+            output.parseResult = null;
+            output.taskResult = null;
 
             String response = "";
             String[] coords = new String[]{};
@@ -931,11 +932,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     Log.e("925-LCL-", "urlConnection.getResponseCode() = " + urlConnection.getResponseCode());
 
-                    if (urlConnection.getResponseCode() == 200) {
+                    int responseCode = urlConnection.getResponseCode();
+
+                    if (responseCode == 200) {
                         InputStreamReader inputStreamReader = new InputStreamReader(urlConnection.getInputStream());
                         BufferedReader r = new BufferedReader(inputStreamReader);
 
-                        int responseCode = urlConnection.getResponseCode();
                         String line = null;
                         while ((line = r.readLine()) != null) {
                             response += line + "\n";
@@ -947,12 +949,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             Log.e("947-LCL-","TaskResult.BAD_RESPONSE");
                             output.taskResult = TaskResult.BAD_RESPONSE;
                         }
-                        else if (response.contains("{\"city\":")){
+                        else {
                             Log.e("Task", "done successfully:response = " + response);
                             output.taskResult = TaskResult.SUCCESS;
                         }
                     }
-                    else if (urlConnection.getResponseCode() == 429) {
+                    else if (responseCode == 429) {
                         // Too many requests
                         Log.e("Task", "too many requests");
                         output.taskResult = TaskResult.TOO_MANY_REQUESTS;
@@ -996,7 +998,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
 
         protected final void handleTaskOutput(TaskOutput output) {
-            Log.e("1025-LCL-","handleTaskOutput:TaskOutput"+output.taskResult);
+            Log.e("1025-LCL-","handleTaskOutput:TaskOutput = "+output.taskResult);
             switch (output.taskResult) {
                 case SUCCESS: {
                     ParseResult parseResult = output.parseResult;
