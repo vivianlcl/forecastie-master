@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.TimeZone;
 
 import com.lcl.thumbweather.R;
-
+/**
+ * Created by Administrator on 2016/5/11.
+ */
 public class WeatherRecyclerAdapter extends RecyclerView.Adapter<WeatherViewHolder> {
     private List<Weather> itemList;
     private Context context;

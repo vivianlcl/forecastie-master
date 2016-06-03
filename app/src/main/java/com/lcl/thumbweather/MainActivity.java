@@ -64,6 +64,7 @@ import java.util.Map;
 
 import com.google.gson.JsonSyntaxException;
 import com.lcl.thumbweather.R;
+
 /**
  * Created by Administrator on 2016/5/10.
  */
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             darkTheme = true;
         }
 
-        // Initiate activity
+        // 初始化 activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
         appView = findViewById(R.id.viewApp);
@@ -198,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
 
-    @Override 
+    @Override
     public void onResume() {
         Log.e("-LCL-","onResume");
         super.onResume();
@@ -317,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });
         alert.show();
     }
-
+        //设置天气图标
     private String setWeatherIcon(int actualId, int hourOfDay) {
         int id = actualId / 100;
         String icon = "";
@@ -519,7 +520,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
     }
     public ParseResult parseLongTermJson(String result) {
-        Log.e("-LCL-", "---parseLongTermJson---:result:" + result);
+        Log.e("522-LCL-", "---parseLongTermJson---:result:" + result);
         try {
 
             final Gson gson = new Gson();
@@ -545,6 +546,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             Log.e("525-LCL-", "listEntities.size():" + listEntities.size());
             for (int i = 0; i < listEntities.size(); i++) {
+                Log.e("f-LCL-","i = "+i);
                 Weather weather = new Weather();
                 javaBean.ListEntity list = listEntities.get(i);
                 javaBean.ListEntity.MainEntity main = list.getMain();
@@ -553,8 +555,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 weather.setTemp_max(main.getTemp_max() + "");
                 weather.setTemp_min(main.getTemp_min() + "");
                 weather.setDescription(list.getWeather().get(0).getDescription());
+                if (list.getRain()== null){
+                    weather.setRain("");
+                }else {
+                    weather.setRain(list.getRain().getThreeh() + "");
+                }
 
-                weather.setRain(list.getRain().getThreeh() + "");
                 weather.setWind(list.getWind().getSpeed());
                 weather.setWindDirectionDegree(list.getWind().getDeg());
                 weather.setPressure(main.getPressure() + "");
@@ -805,38 +811,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
 
         } else {
-            String provider;
-            Location location = null;
             progressDialog.setMessage(getString(R.string.getting_location));
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            List<String> providerList = locationManager.getProviders(true);
-            if (providerList.contains(LocationManager.GPS_PROVIDER)){
-            Log.d("LCL", "GPS");
-            provider = LocationManager.GPS_PROVIDER;
-            }else if (providerList.contains(LocationManager.NETWORK_PROVIDER)){
-            Log.d("LCL","NET");
-            provider = LocationManager.NETWORK_PROVIDER;
-            }else {
-            //There is no location provider can use,then Pop-up prompts
-            Toast.makeText(this,"No location provider to use",Toast.LENGTH_SHORT).show();
-            return;
-            }
-            location = locationManager.getLastKnownLocation(provider);
-        Log.d("LCL", "location:" + location);
-        if (location != null){
-            //show the current device information
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-            preferences.edit().putString("Location", location.toString());
-            preferences.edit().commit();
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-            new ProvideCityNameTask().execute("coords", Double.toString(latitude), Double.toString(longitude));
-        }else if (location == null){
-            searchCities();
-        }
-        locationManager.requestLocationUpdates(provider,5000,1,this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
     }
 
@@ -846,7 +825,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
+                // 如果请求取消,返回的结果数组为0
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getCityByLocation();
                 }
@@ -915,7 +894,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 final String zeroParam = params[0];
                 if ("cachedResponse".equals(zeroParam)) {
                     response = params[1];
-                    // Actually we did nothing in this case :)
+                    // 实际上我们什么也没有做
                     output.taskResult = TaskResult.SUCCESS;
                 } else if ("coords".equals(zeroParam)) {
                     String lat = params[1];
@@ -927,6 +906,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             if (response.isEmpty()) {
                 Log.e("822-LCL-", "response.isEmpty():" + response.isEmpty());
                 try {
+                    //建立网络连接,并请求数据
                     URL url = provideURL(coords);
                     Log.e("947-LCL-", "URL = " + url.toString());
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -944,7 +924,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         }
                         close(r);
                         urlConnection.disconnect();
-                        // Background work finished successfully
+                        //
                         if (response.contains("<html>")){
                             Log.e("947-LCL-","TaskResult.BAD_RESPONSE");
                             output.taskResult = TaskResult.BAD_RESPONSE;
@@ -955,29 +935,29 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         }
                     }
                     else if (responseCode == 429) {
-                        // Too many requests
+                        // 请求太多
                         Log.e("Task", "too many requests");
                         output.taskResult = TaskResult.TOO_MANY_REQUESTS;
                     }
                     else {
-                        // Bad response from server
+                        // 服务器传回的错误数据
                         Log.e("Task", "bad response");
                         output.taskResult = TaskResult.BAD_RESPONSE;
                     }
                 } catch (IOException e) {
                     Log.e("IOException Data", response);
                     e.printStackTrace();
-                    // Exception while reading data from url connection
+                    // 读取网络数据发生的IO异常
                     output.taskResult = TaskResult.IO_EXCEPTION;
                 }
             }
 
             if (TaskResult.SUCCESS.equals(output.taskResult)) {
-                // Parse JSON data
+                // 解析JSON数据
                 ParseResult parseResult = parseResponse(response);
                 Log.e("850-LCL-","success-->response:"+response);
                 if (ParseResult.CITY_NOT_FOUND.equals(parseResult)) {
-                    // Retain previously specified city if current one was not recognized
+                    //如果没有发现当前的城市,则使用之前缓存的城市
                     restorePreviousCity();
                 }
                 output.parseResult = parseResult;
@@ -1148,18 +1128,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         @Override
         protected void onPostExecute(TaskOutput output) {
-            /* Handle possible errors only */
+            /* 处理可能出现的错误*/
             handleTaskOutput(output);
         }
     }
 
     private class TaskOutput {
         /**
-         * Indicates result of parsing server response
+         * 解析结果码
          */
         ParseResult parseResult;
         /**
-         * Indicates result of background task
+         * 网络访问结果码
          */
         TaskResult taskResult;
     }

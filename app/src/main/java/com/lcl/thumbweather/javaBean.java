@@ -1,5 +1,7 @@
 package com.lcl.thumbweather;
 
+import android.util.Log;
+
 import java.util.List;
 
 /**
@@ -77,10 +79,11 @@ public class javaBean {
         private SysEntity sys;
         private List<WeatherEntity> weather;
         private String dt_txt;
-        private RainEntity rain = null;
+        private RainEntity rain = null ;
         private MainEntity main;
 
         public RainEntity getRain() {
+            Log.e("86-LCL-","getRain()"+rain);
             return rain;
         }
 
